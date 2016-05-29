@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from django.shortcuts import render
 
 from .models import Student
 
@@ -12,17 +13,21 @@ from .models import Student
 #home-page
 def index(request):
 	b = Student.objects.all()
-	# print(b.get().first_name)
-	template = loader.get_template('student/index.html')
+	# print(b.get().student_id)
+	# template = loader.get_template('student/index.html')
 	context = {
-		'current_user': b.get().first_name,
+		'current_user': b.get().first_name + " " + b.get().last_name,
+		'student_id' : b.get().student_id,
+		'course' : b.get().course.upper(),
 	}
 
-	return HttpResponse(template.render(context, request))
+	return render(request, 'student/index.html', context)
 
 #under self-service
 def class_search(request):
-	return HttpResponse("This is the class search page")
+	context = {}	
+	
+	return render(request, 'student/class_search.html', context)
 
 #under enrolment
 def class_add(request):
